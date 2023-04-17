@@ -96,18 +96,18 @@ public class ColaboradorRepository {
 	private void updateOptions(Integer id, Colaborador atualizado) {
 		Colaborador antigo = read(id);
 
-		List<String> atualizadoOpcaoNomeList = new ArrayList<>();
+		List<String> antigoOpcaoNomeList = new ArrayList<>();
 		for (Opcao opcao : antigo.getOpcoes()) {
+			antigoOpcaoNomeList.add(opcao.getNome());
+		}
+
+		List<String> atualizadoOpcaoNomeList = new ArrayList<>();
+		for (Opcao opcao : atualizado.getOpcoes()) {
 			atualizadoOpcaoNomeList.add(opcao.getNome());
 		}
 
-		List<String> novoOpcaoNomeList = new ArrayList<>();
-		for (Opcao opcao : atualizado.getOpcoes()) {
-			novoOpcaoNomeList.add(opcao.getNome());
-		}
-
-		for (String opcaoNome : novoOpcaoNomeList) {
-			if (!atualizadoOpcaoNomeList.contains(opcaoNome)) {
+		for (String opcaoNome : atualizadoOpcaoNomeList) {
+			if (!antigoOpcaoNomeList.contains(opcaoNome)) {
 				em.createNativeQuery("INSERT INTO opcao VALUES (NULL, ?, ?, ?)")
 					.setParameter(1, antigo.getData())
 					.setParameter(2, opcaoNome)
@@ -116,8 +116,8 @@ public class ColaboradorRepository {
 			}
 		}
 
-		for (String opcaoNome : atualizadoOpcaoNomeList) {
-			if (!novoOpcaoNomeList.contains(opcaoNome)) {
+		for (String opcaoNome : antigoOpcaoNomeList) {
+			if (!atualizadoOpcaoNomeList.contains(opcaoNome)) {
 				em.createNativeQuery("DELETE FROM opcao WHERE nome = ? AND data_cafe = ?")
 					.setParameter(1, opcaoNome)
 					.setParameter(2, antigo.getData())
