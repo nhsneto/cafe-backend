@@ -1,9 +1,9 @@
 package com.grupowl.unidac.desafio.repository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +11,6 @@ import com.grupowl.unidac.desafio.model.Colaborador;
 import com.grupowl.unidac.desafio.model.Opcao;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
@@ -29,7 +28,7 @@ public class ColaboradorRepository {
 	
 	public Colaborador create(Colaborador colaborador) {
 		Colaborador persistedColaborador = persistColaborador(colaborador);
-		
+
 		for (Opcao opcao : colaborador.getOpcoes()) {
 			em.createNativeQuery("INSERT INTO opcao VALUES (NULL, ?, ?, ?)")
 				.setParameter(1, persistedColaborador.getData())
@@ -130,5 +129,33 @@ public class ColaboradorRepository {
 		em.createNativeQuery("DELETE FROM colaborador WHERE id = ?")
 			.setParameter(1, id)
 			.executeUpdate();
+	}
+
+	public List<Colaborador> getColaboradorByCPF(String cpf) {
+		 return (List<Colaborador>) em.createNativeQuery(
+				"SELECT * FROM colaborador WHERE cpf = ?", Colaborador.class)
+					.setParameter(1, cpf)
+					.getResultList();
+	}
+
+	public List<Colaborador> getColaboradorByNome(String nome) {
+		return (List<Colaborador>) em.createNativeQuery(
+				"SELECT * FROM colaborador WHERE nome = ?", Colaborador.class)
+					.setParameter(1, nome)
+					.getResultList();
+	}
+	
+	public List<String> getOpcoesByData(LocalDate data) {
+		return (List<String>) em.createNativeQuery(
+				"SELECT nome FROM opcao WHERE data_cafe = ?", String.class)
+					.setParameter(1, data)
+					.getResultList();
+	}
+
+	public List<String> getOpcoesByColaboradorId(Integer colaboradorId) {
+		return (List<String>) em.createNativeQuery(
+				"SELECT nome FROM opcao WHERE colaborador_id = ?", String.class)
+					.setParameter(1, colaboradorId)
+					.getResultList();
 	}
 }
