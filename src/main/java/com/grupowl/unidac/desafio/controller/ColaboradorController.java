@@ -1,8 +1,8 @@
 package com.grupowl.unidac.desafio.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,38 +10,60 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.grupowl.unidac.desafio.model.Colaborador;
 import com.grupowl.unidac.desafio.repository.ColaboradorRepository;
+import com.grupowl.unidac.desafio.util.MensagemDeErro;
+import com.grupowl.unidac.desafio.validator.ColaboradorValidator;
 
 @RestController
 public class ColaboradorController {
 
 	@Autowired
-	ColaboradorRepository colaboradorRepo;
+	private ColaboradorRepository repository;
+
+	@Autowired
+	private ColaboradorValidator validator;
 
 	@GetMapping("/colaboradores")
-	public List<Colaborador> lerTodos() {
-		return colaboradorRepo.readAll();
+	public ResponseEntity<?> lerTodos() {
+		return ResponseEntity.ok().body(repository.readAll());
 	}
 
 	@GetMapping("/colaboradores/{id}")
-	public Colaborador ler(@PathVariable Integer id) {
-		return colaboradorRepo.read(id);
+	public ResponseEntity<?> ler(@PathVariable Integer id) {
+		return ResponseEntity.ok().body(repository.read(id));
 	}
 
 	@PostMapping("/colaboradores")
-	public Colaborador salvar(@RequestBody Colaborador colaborador) {
-		return colaboradorRepo.create(colaborador);
+	public ResponseEntity<?> salvar(@RequestBody Colaborador colaborador) {
+		try {
+			validator.isCreateValid(colaborador);
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(repository.create(colaborador));
+		} catch (ResponseStatusException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(new MensagemDeErro(e.getReason()));
+		}
 	}
 
 	@PutMapping("/colaboradores/{id}")
-	public void atualizar(@PathVariable Integer id, @RequestBody Colaborador colaborador) {
-		colaboradorRepo.update(id, colaborador);
+	public ResponseEntity<?> atualizar(@PathVariable Integer id, @RequestBody Colaborador colaborador) {
+		try {
+			validator.isUpdateValid(id, colaborador);
+			repository.update(id, colaborador);
+			return ResponseEntity.ok().body("");
+		} catch (ResponseStatusException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(new MensagemDeErro(e.getReason()));
+		}
 	}
 
 	@DeleteMapping("/colaboradores/{id}")
-	public void deletar(@PathVariable Integer id) {
-		colaboradorRepo.delete(id);
+	public ResponseEntity<?> deletar(@PathVariable Integer id) {
+		repository.delete(id);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		
 	}
 }
