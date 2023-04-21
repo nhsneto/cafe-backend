@@ -41,7 +41,7 @@ public class Colaborador implements Serializable {
 	private LocalDate data;
 
 	@Column(nullable = false)
-	Boolean trouxe;
+	private Boolean trouxe;
 
 	public Integer getId() {
 		return id;
