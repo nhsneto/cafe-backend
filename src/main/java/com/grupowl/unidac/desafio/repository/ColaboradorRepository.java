@@ -44,10 +44,11 @@ public class ColaboradorRepository {
 	}
 
 	private Colaborador persistColaborador(Colaborador colaborador) {
-		em.createNativeQuery("INSERT INTO colaborador VALUES (NULL, ?, ?, ?)")
+		em.createNativeQuery("INSERT INTO colaborador VALUES (NULL, ?, ?, ?, ?)")
 		.setParameter(1, colaborador.getCpf())
 		.setParameter(2, colaborador.getData())
 		.setParameter(3, colaborador.getNome())
+		.setParameter(4, Boolean.FALSE)
 		.executeUpdate();
 
 		return (Colaborador) em.createNativeQuery(
@@ -89,6 +90,13 @@ public class ColaboradorRepository {
 				.setParameter(1, atualizado.getNome())
 				.setParameter(2, id)
 				.executeUpdate();
+		}
+
+		if (!antigo.getTrouxe().equals(atualizado.getTrouxe())) {
+			em.createNativeQuery("UPDATE colaborador SET trouxe = ? WHERE id = ?")
+			.setParameter(1, atualizado.getTrouxe())
+			.setParameter(2, id)
+			.executeUpdate();
 		}
 	}
 

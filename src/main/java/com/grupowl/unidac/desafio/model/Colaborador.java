@@ -40,6 +40,9 @@ public class Colaborador implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private LocalDate data;
 
+	@Column(nullable = false)
+	Boolean trouxe;
+
 	public Integer getId() {
 		return id;
 	}
@@ -80,9 +83,17 @@ public class Colaborador implements Serializable {
 		this.data = data;
 	}
 
+	public Boolean getTrouxe() {
+		return trouxe;
+	}
+
+	public void setTrouxe(Boolean trouxe) {
+		this.trouxe = trouxe;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(cpf, data, id, nome, opcoes);
+		return Objects.hash(cpf, data, id, nome, opcoes, trouxe);
 	}
 
 	@Override
@@ -95,12 +106,13 @@ public class Colaborador implements Serializable {
 			return false;
 		Colaborador other = (Colaborador) obj;
 		return Objects.equals(cpf, other.cpf) && Objects.equals(data, other.data) && Objects.equals(id, other.id)
-				&& Objects.equals(nome, other.nome) && Objects.equals(opcoes, other.opcoes);
+				&& Objects.equals(nome, other.nome) && Objects.equals(opcoes, other.opcoes)
+				&& Objects.equals(trouxe, other.trouxe);
 	}
 
 	@Override
 	public String toString() {
 		return "Colaborador [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", opcoes=" + opcoes + ", data=" + data
-				+ "]";
+				+ ", trouxe=" + trouxe + "]";
 	}
 }
