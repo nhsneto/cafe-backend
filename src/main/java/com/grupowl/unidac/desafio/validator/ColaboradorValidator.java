@@ -14,7 +14,6 @@ import com.grupowl.unidac.desafio.model.Colaborador;
 import com.grupowl.unidac.desafio.model.Opcao;
 import com.grupowl.unidac.desafio.repository.ColaboradorRepository;
 
-
 @Component
 public class ColaboradorValidator {
 
@@ -39,7 +38,7 @@ public class ColaboradorValidator {
 		if (!antigo.getData().equals(atualizado.getData())) {
 			isDataNoFuturo(atualizado.getData());
 		}
-		
+
 		if (!antigo.getNome().equals(atualizado.getNome())) {
 			isColaboradorUnico(atualizado.getNome());
 		}
@@ -58,51 +57,50 @@ public class ColaboradorValidator {
 
 	private void isCPFValido(String cpf) throws ResponseStatusException {
 		boolean temOnzeNumeros = Pattern.compile("[0-9]{11}").matcher(cpf).matches();
-	    if (!temOnzeNumeros) {
-	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-	    			"CPF não possui onze (11) dígitos.");
-	    }
-
-	    List<Integer> numbers = new ArrayList<>();
-	    for (int i = 0; i < 9; i++) {
-		    numbers.add(i, Integer.parseInt(String.valueOf(cpf.charAt(i))));
+		if (!temOnzeNumeros) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF não possui onze (11) dígitos.");
 		}
 
-	    int primeiroDigitoVerificador = getDigitoVerificador(numbers);
-	    numbers.add(primeiroDigitoVerificador);
-	    int segundoDigitoVerificador = getDigitoVerificador(numbers);
+		List<Integer> numbers = new ArrayList<>();
+		for (int i = 0; i < 9; i++) {
+			numbers.add(i, Integer.parseInt(String.valueOf(cpf.charAt(i))));
+		}
 
-	    String cpfDigitosVerificadores = cpf.substring(cpf.length() - 2, cpf.length());
-	    String digitosVerificadoresCorretos = Integer.toString(primeiroDigitoVerificador)
-	            + Integer.toString(segundoDigitoVerificador);
+		int primeiroDigitoVerificador = getDigitoVerificador(numbers);
+		numbers.add(primeiroDigitoVerificador);
+		int segundoDigitoVerificador = getDigitoVerificador(numbers);
 
-	    if (!cpfDigitosVerificadores.equals(digitosVerificadoresCorretos)) {
-	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF inválido.");
-	    }
+		String cpfDigitosVerificadores = cpf.substring(cpf.length() - 2, cpf.length());
+		String digitosVerificadoresCorretos = Integer.toString(primeiroDigitoVerificador)
+				+ Integer.toString(segundoDigitoVerificador);
 
-	    if (!repository.getColaboradorByCPF(cpf).isEmpty()) {
-	    	throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O CPF já existe no sistema."); 
-	    }
+		if (!cpfDigitosVerificadores.equals(digitosVerificadoresCorretos)) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "CPF inválido.");
+		}
+
+		if (!repository.getColaboradorByCPF(cpf).isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "O CPF já existe no sistema.");
+		}
 	}
 
 	private Integer getDigitoVerificador(List<Integer> digitos) {
 		int soma = 0;
-	    int multiplicador = 2;
-	    for (int i = digitos.size() - 1; i >= 0; i--) {
-	        soma += digitos.get(i) * multiplicador;
-	        multiplicador++;
-	    }
+		int multiplicador = 2;
+		for (int i = digitos.size() - 1; i >= 0; i--) {
+			soma += digitos.get(i) * multiplicador;
+			multiplicador++;
+		}
 
-	    int restoDivisao = soma % 11;
-	    if (restoDivisao >= 2) {
-	        return 11 - restoDivisao;
-	    }
+		int restoDivisao = soma % 11;
+		if (restoDivisao >= 2) {
+			return 11 - restoDivisao;
+		}
 
-	    return 0;
+		return 0;
 	}
 
 	private void isColaboradorUnico(String nome) {
-		if (!Pattern.compile("[a-zA-Z]{2,}").matcher(nome).matches()) {
+		if (!Pattern.compile("^[a-zA-Z\s]{2,}$").matcher(nome).matches()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"O nome informado é inválido. Utilize apenas letras.");
 		}
@@ -124,12 +122,12 @@ public class ColaboradorValidator {
 		List<String> opcoesExistentes = repository.getOpcoesByData(data);
 		for (Opcao opcao : opcoes) {
 			if (opcoesExistentes.contains(opcao.getNome())) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-						"A opção '" + opcao.getNome() + "' já foi escolhida por outro colaborador para o café da manhã.");
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A opção '" + opcao.getNome()
+						+ "' já foi escolhida por outro colaborador para o café da manhã.");
 			}
 		}
 	}
-	
+
 	private void isOpcaoUnica(String nome, LocalDate data) {
 		List<String> opcoesExistentes = repository.getOpcoesByData(data);
 		if (opcoesExistentes.contains(nome)) {
