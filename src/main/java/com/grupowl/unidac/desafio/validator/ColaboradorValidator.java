@@ -25,6 +25,7 @@ public class ColaboradorValidator {
 		isCPFValido(colaborador.getCpf());
 		isDataNoFuturo(colaborador.getData());
 		isColaboradorUnico(colaborador.getNome());
+		isOpcoesVazia(colaborador.getOpcoes());
 		isOpcoesUnicas(colaborador.getOpcoes(), colaborador.getData());
 	}
 
@@ -42,6 +43,8 @@ public class ColaboradorValidator {
 		if (!antigo.getNome().equals(atualizado.getNome())) {
 			isColaboradorUnico(atualizado.getNome());
 		}
+
+		isOpcoesVazia(atualizado.getOpcoes());
 
 		List<String> opcoesAntigo = repository.getOpcoesByColaboradorId(id);
 		for (Opcao opcao : atualizado.getOpcoes()) {
@@ -102,6 +105,13 @@ public class ColaboradorValidator {
 		if (!repository.getColaboradorByNome(nome).isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"O Colaborador '" + nome + "' já existe no sistema.");
+		}
+	}
+
+	private void isOpcoesVazia(List<Opcao> opcoes) {
+		if (opcoes.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"O Colaborador precisa levar pelo menos um item para o café.");
 		}
 	}
 
