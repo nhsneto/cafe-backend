@@ -102,6 +102,11 @@ public class ColaboradorValidator {
 	}
 
 	private void isColaboradorUnico(String nome) {
+		if (!Pattern.compile("[a-zA-Z]{2,}").matcher(nome).matches()) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+					"O nome informado é inválido. Utilize apenas letras.");
+		}
+
 		if (!repository.getColaboradorByNome(nome).isEmpty()) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"O Colaborador '" + nome + "' já existe no sistema.");
