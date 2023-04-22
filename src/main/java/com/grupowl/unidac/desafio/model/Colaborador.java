@@ -7,7 +7,6 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,7 +31,7 @@ public class Colaborador implements Serializable {
 	@Column(nullable = false, unique = true, length = 15)
 	private String cpf;
 
-	@OneToMany(mappedBy = "colaborador", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "colaborador")
 	@JsonManagedReference
 	private List<Opcao> opcoes;
 

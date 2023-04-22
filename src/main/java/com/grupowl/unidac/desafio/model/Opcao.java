@@ -29,7 +29,7 @@ public class Opcao implements Serializable {
 	@Column(nullable = false, length = 200)
 	private String nome;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
 	@JsonBackReference
 	private Colaborador colaborador;
 

@@ -148,7 +148,7 @@ public class ColaboradorRepository {
 
 	public List<Colaborador> getColaboradorByNome(String nome) {
 		return (List<Colaborador>) em.createNativeQuery(
-				"SELECT * FROM colaborador WHERE nome = ?", Colaborador.class)
+				"SELECT * FROM colaborador WHERE UPPER(nome) = UPPER(?)", Colaborador.class)
 					.setParameter(1, nome)
 					.getResultList();
 	}
