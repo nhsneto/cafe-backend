@@ -159,7 +159,7 @@ public class ColaboradorRepository {
 	
 	public List<String> getOpcoesByData(LocalDate data) {
 		return (List<String>) em.createNativeQuery(
-				"SELECT nome FROM opcao WHERE data_cafe = ?", String.class)
+				"SELECT UPPER(nome) FROM opcao WHERE data_cafe = ?", String.class)
 					.setParameter(1, data)
 					.getResultList();
 	}

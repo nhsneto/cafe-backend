@@ -123,7 +123,7 @@ public class ColaboradorValidator {
 	private void isOpcoesUnicas(List<Opcao> opcoes, LocalDate data) {
 		List<String> opcoesExistentes = repository.getOpcoesByData(data);
 		for (Opcao opcao : opcoes) {
-			if (opcoesExistentes.contains(opcao.getNome())) {
+			if (opcoesExistentes.contains(opcao.getNome().toUpperCase())) {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A opção '" + opcao.getNome()
 						+ "' já foi escolhida por outro colaborador para o café da manhã.");
 			}
@@ -132,7 +132,7 @@ public class ColaboradorValidator {
 
 	private void isOpcaoUnica(String nome, LocalDate data) {
 		List<String> opcoesExistentes = repository.getOpcoesByData(data);
-		if (opcoesExistentes.contains(nome)) {
+		if (opcoesExistentes.contains(nome.toUpperCase())) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"A opção '" + nome + "' já foi escolhida por outro colaborador para o café da manhã.");
 		}
