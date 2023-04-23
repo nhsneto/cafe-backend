@@ -1,7 +1,9 @@
 package com.grupowl.unidac.desafio.validator;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -137,7 +139,8 @@ public class ColaboradorValidator {
 	}
 
 	private void isDataNoFuturo(LocalDate data) throws ResponseStatusException {
-		if (data.compareTo(LocalDate.now()) <= 0) {
+		LocalDate hoje = new Date().toInstant().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDate();
+		if (data.compareTo(hoje) <= 0) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
 					"A data informada é inválida. A data deve ser maior do que a atual.");
 		}
