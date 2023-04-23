@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -29,7 +28,7 @@ public class Opcao implements Serializable {
 	@Column(nullable = false, length = 200)
 	private String nome;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JsonBackReference
 	private Colaborador colaborador;
 

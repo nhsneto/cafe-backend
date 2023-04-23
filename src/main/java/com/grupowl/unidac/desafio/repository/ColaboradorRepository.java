@@ -134,6 +134,10 @@ public class ColaboradorRepository {
 	}
 
 	public void delete(Integer id) {
+		em.createNativeQuery("DELETE FROM opcao WHERE id = ?")
+			.setParameter(1, id)
+			.executeUpdate();
+
 		em.createNativeQuery("DELETE FROM colaborador WHERE id = ?")
 			.setParameter(1, id)
 			.executeUpdate();
