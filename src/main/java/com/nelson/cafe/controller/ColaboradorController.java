@@ -1,4 +1,4 @@
-package com.grupowl.unidac.desafio.controller;
+package com.nelson.cafe.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.grupowl.unidac.desafio.model.Colaborador;
-import com.grupowl.unidac.desafio.repository.ColaboradorRepository;
-import com.grupowl.unidac.desafio.util.MensagemDeErro;
-import com.grupowl.unidac.desafio.validator.ColaboradorValidator;
+import com.nelson.cafe.model.Colaborador;
+import com.nelson.cafe.repository.ColaboradorRepository;
+import com.nelson.cafe.util.MensagemDeErro;
+import com.nelson.cafe.validator.ColaboradorValidator;
 
 @RestController
 @CrossOrigin

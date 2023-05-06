@@ -1,4 +1,4 @@
-package com.grupowl.unidac.desafio.model;
+package com.nelson.cafe.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;

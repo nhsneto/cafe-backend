@@ -1,4 +1,4 @@
-package com.grupowl.unidac.desafio.validator;
+package com.nelson.cafe.validator;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -12,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.grupowl.unidac.desafio.model.Colaborador;
-import com.grupowl.unidac.desafio.model.Opcao;
-import com.grupowl.unidac.desafio.repository.ColaboradorRepository;
+import com.nelson.cafe.model.Colaborador;
+import com.nelson.cafe.model.Opcao;
+import com.nelson.cafe.repository.ColaboradorRepository;
 
 @Component
 public class ColaboradorValidator {

@@ -1,4 +1,4 @@
-package com.grupowl.unidac.desafio.repository;
+package com.nelson.cafe.repository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.grupowl.unidac.desafio.model.Colaborador;
-import com.grupowl.unidac.desafio.model.Opcao;
+import com.nelson.cafe.model.Colaborador;
+import com.nelson.cafe.model.Opcao;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
